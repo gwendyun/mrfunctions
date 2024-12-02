@@ -123,5 +123,32 @@ log_res <- function(res) {
                                              res$`logor_MR_PRESSO`,
                                              res$`logor_lci95_MR_PRESSO`,
                                              res$`logor_uci95_MR_PRESSO`)
+
+library(data.table)
+cols_to_move <- c("outliers", 
+                  "Beta (95% CI)_MR_PRESSO", 
+                  "OR (95% CI)_MR_PRESSO", 
+                  "logBeta (95% CI)_MR_PRESSO", 
+                  "logOR (95% CI)_MR_PRESSO", 
+                  "logb_MR_PRESSO", 
+                  "loglo_ci_MR_PRESSO", 
+                  "logup_ci_MR_PRESSO", 
+                  "logor_MR_PRESSO", 
+                  "logor_lci95_MR_PRESSO", 
+                  "logor_uci95_MR_PRESSO", 
+                  "PRESSO_Distortion_beta", 
+                  "PRESSO_Distortion_Pvalue")
+
+# 找出不存在的列，并创建这些列填充为 NA
+missing_cols <- setdiff(cols_to_move, names(res))
+if (length(missing_cols) > 0) {
+  for (col in missing_cols) {
+    res[[col]] <- NA
+  }
+}
+
+# 调整列顺序，将目标列移到最后
+setcolorder(res, c(setdiff(names(res), cols_to_move), cols_to_move))
+
   return(res)
 }
