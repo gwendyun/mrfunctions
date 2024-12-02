@@ -114,12 +114,12 @@ log_res <- function(res) {
   res$`logor_lci95_MR_PRESSO` <- exp(res$`or_lci95_MR_PRESSO`)
   res$`logor_uci95_MR_PRESSO` <- exp(res$`or_uci95_MR_PRESSO`)
   
-  res$`logBeta (95% CI)_Weighted mode` <- sprintf("%.3f (%.3f to %.3f)",
+  res$`logBeta (95% CI)_MR_PRESSO` <- sprintf("%.3f (%.3f to %.3f)",
                                                res$`logb_MR_PRESSO`,
                                                res$`loglo_ci_MR_PRESSO`,
                                                res$`logup_ci_MR_PRESSO`)
   
-  res$`logOR (95% CI)_Weighted mode` <- sprintf("%.3f (%.3f to %.3f)",
+  res$`logOR (95% CI)_MR_PRESSO` <- sprintf("%.3f (%.3f to %.3f)",
                                              res$`logor_MR_PRESSO`,
                                              res$`logor_lci95_MR_PRESSO`,
                                              res$`logor_uci95_MR_PRESSO`)
