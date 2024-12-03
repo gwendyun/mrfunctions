@@ -1,1 +1,1 @@
-remotes::install_github("gwendyun/mrfunctions",force = TRUE)
+Install: remotes::install_github("gwendyun/mrfunctions",force = TRUE)
