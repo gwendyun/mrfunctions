@@ -6,9 +6,7 @@
 #' @return mrcML_res
 #' @export
 #'
-#' @examples mrcML_res <- dat %>%
-#'  dat_to_mr_input() %>%
-#'  U6_mrcML(dat = ., random_seed = 314, Alpha = 0.05, num_pert = 200, maxit = 100)
+#' @examples mrcML_res <- U6_mrcML(mr_input_obj, dat, random_seed = 314, Alpha = 0.05, num_pert = 200, maxit = 100)
 #'
 #'
 U6_mrcML <- function(mr_input_obj, dat, random_seed = 314, Alpha = 0.05, num_pert = 200, maxit = 100) {
