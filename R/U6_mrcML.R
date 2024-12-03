@@ -10,6 +10,7 @@
 #'
 #'
 U6_mrcML <- function(mr_input_obj, dat, random_seed = 314, Alpha = 0.05, num_pert = 200, maxit = 100) {
+  suppressMessages(require('MendelianRandomization'))
 
   mrcML <- mr_cML(
     object = mr_input_obj,
