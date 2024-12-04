@@ -1,8 +1,9 @@
 #' @title U6_mrcML
-#' @description further analysis for univariable cML from MendelianRandomization package
+#' @description further analysis for univariable cML from MendelianRandomization package add to res
 #'
 #' @param dat
-#'
+#' @param res
+#' 
 #' @return mrcML_res
 #' @export
 #'

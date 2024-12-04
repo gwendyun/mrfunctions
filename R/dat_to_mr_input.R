@@ -1,9 +1,9 @@
 #' @title dat_to_mr_input
-#' @description mrinput from MendelianRandomization package
+#' @description TwoSampleMR package transfer to mrinput from MendelianRandomization package
 #'
 #' @param dat
 #'
-#' @return mrinput
+#' @return mr_input_obj
 #' @export
 #'
 #' @examples mr_input_obj <- dat_to_mr_input(dat)
