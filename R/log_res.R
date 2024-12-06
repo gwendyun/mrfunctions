@@ -124,7 +124,6 @@ log_res <- function(res) {
                                              res$logor_uci95_MR_PRESSO)
 
 library(data.table)
-# 指定需要调整顺序的列名
 cols_to_move <- c("outliers", 
                   "Beta (95% CI)_MR_PRESSO", 
                   "OR (95% CI)_MR_PRESSO", 
@@ -139,7 +138,7 @@ cols_to_move <- c("outliers",
                   "PRESSO_Distortion_beta", 
                   "PRESSO_Distortion_Pvalue")
 
-# 找出不存在的列，并创建这些列填充为 NA
+# add NA is not col does not exist
 missing_cols <- setdiff(cols_to_move, names(res))
 if (length(missing_cols) > 0) {
   for (col in missing_cols) {
@@ -147,7 +146,7 @@ if (length(missing_cols) > 0) {
   }
 }
 
-# 调整列顺序，将目标列移到最后
+# reorder
 setcolorder(res, c(setdiff(names(res), cols_to_move), cols_to_move))
 
   return(res)
