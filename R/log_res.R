@@ -105,5 +105,48 @@ log_res <- function(res) {
                                                 res$`logor_lci95_Weighted mode`,
                                                 res$`logor_uci95_Weighted mode`)
 
+  res$logb_MR_PRESSO <- 0.693 * res$b_MR_PRESSO
+  res$loglo_ci_MR_PRESSO <- 0.693 * res$lo_ci_MR_PRESSO
+  res$logup_ci_MR_PRESSO <- 0.693 * res$up_ci_MR_PRESSO
+  
+  res$logor_MR_PRESSO <- exp(res$logb_MR_PRESSO)
+  res$logor_lci95_MR_PRESSO <- exp(res$loglo_ci_MR_PRESSO)
+  res$logor_uci95_MR_PRESSO <- exp(res$logup_ci_MR_PRESSO)
+  
+  res$logBeta (95% CI)_MR_PRESSO <- sprintf("%.3f (%.3f to %.3f)",
+                                               res$logb_MR_PRESSO,
+                                               res$loglo_ci_MR_PRESSO,
+                                               res$logup_ci_MR_PRESSO)
+  
+  res$logOR (95% CI)_MR_PRESSO <- sprintf("%.3f (%.3f to %.3f)",
+                                             res$logor_MR_PRESSO,
+                                             res$logor_lci95_MR_PRESSO,
+                                             res$logor_uci95_MR_PRESSO)
+
+library(data.table)
+# 指定需要调整顺序的列名
+cols_to_move <- c("outliers", 
+                  "Beta (95% CI)_MR_PRESSO", 
+                  "OR (95% CI)_MR_PRESSO", 
+                  "logb_MR_PRESSO", 
+                  "loglo_ci_MR_PRESSO", 
+                  "logup_ci_MR_PRESSO", 
+                  "logor_MR_PRESSO", 
+                  "logor_lci95_MR_PRESSO", 
+                  "logor_uci95_MR_PRESSO", 
+                  "PRESSO_Distortion_beta", 
+                  "PRESSO_Distortion_Pvalue")
+
+# 找出不存在的列，并创建这些列填充为 NA
+missing_cols <- setdiff(cols_to_move, names(res))
+if (length(missing_cols) > 0) {
+  for (col in missing_cols) {
+    res[[col]] <- NA
+  }
+}
+
+# 调整列顺序，将目标列移到最后
+setcolorder(res, c(setdiff(names(res), cols_to_move), cols_to_move))
+
   return(res)
 }
