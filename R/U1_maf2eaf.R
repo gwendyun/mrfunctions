@@ -13,6 +13,36 @@
 U1_maf2eaf <- function(df) {
   require(dplyr)
 
+  rename_col <- function(df ,
+                         patterns ,
+                         format ){
+    B <- colnames( df )
+
+    for(i in 1:length(B)){
+      col <- B[i]
+      for( y in 1:length(patterns) ){
+        if( tolower(patterns[y]) == tolower(B[i])){
+
+          if (!B[i] == format) {
+            cat("Replacing", B[i], "with", format, "\n")
+          }
+
+          B[i] <- format
+        }
+      }
+    }
+
+    colnames(df) <- B
+
+    if (length(unique(colnames(df))) != length(colnames(df))) {
+      stop(paste(format, "column name is duplicated, please use `help(U1_Clean_data)` to check the documentation and provide only one!"), call. = FALSE)
+    }
+
+    return(df)
+  }
+
+  if(is.data.frame(df)){ df = as.data.frame(df) }
+
   # Check for MAF columns and rename if present
   if (any(c("MinorAlleleFrequency", "minor_allele_frequency", "MAF", "Freq", "freq", "alt_freq", 'freq_minor', 'Freq_Minor_Allele', "maf") %in% colnames(df))) {
     df <- rename_col(df, patterns = c("MinorAlleleFrequency", "minor_allele_frequency", "MAF", "Freq", "freq", "alt_freq", 'freq_minor', 'Freq_Minor_Allele', "maf"), format = "maf")
