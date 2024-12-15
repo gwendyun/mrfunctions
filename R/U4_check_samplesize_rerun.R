@@ -6,10 +6,7 @@
 #' @return dat
 #' @export
 #'
-#' @examples
-#'
-#' help(U4_harmonise_data)
-#'
+#' @examples help(U4_harmonise_data)
 #'
 #'
 U4_check_samplesize_rerun<- function(dat){

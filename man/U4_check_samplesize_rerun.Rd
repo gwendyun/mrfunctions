@@ -16,9 +16,7 @@ dat
 Check if the sample size is correct, if not, it needs to be modified. If the name is not satisfactory, it also needs to be modified. Do remember rerun again after correction.
 }
 \examples{
-
 help(U4_harmonise_data)
-
 
 
 }
