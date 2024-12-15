@@ -23,4 +23,5 @@ clean exp. exp does not require that many of snp
 df <- U1_Clean_data_exp(df,continuous=FALSE,save=FALSE)
 
 
+
 }

@@ -7,11 +7,13 @@
 #'
 #' @return Returns cleaned data
 #'
-#' @examples
-#' df <- U1_Clean_data_exp(df,continuous=FALSE,save=FALSE)
+#' @examples df <- U1_Clean_data_exp(df,continuous=FALSE,save=FALSE)
+#'
 #'
 #'
 U1_Clean_data_exp <- function(df,continuous=FALSE,save=FALSE){
+  require(Oneclick)
+
   if(nrow(df)<=20){
     warning('The number of SNPs is too small, it may not be suitable for exp analysis')
   }
