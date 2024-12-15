@@ -7,19 +7,20 @@
 U1_Clean_data_exp(df, continuous = FALSE, save = FALSE)
 }
 \arguments{
-\item{df}{Dataframe}
+\item{df}{Data frame}
 
-\item{continuous}{If TRUE, will not ask for case sample size.}
+\item{continuous}{If continuous variable, will not ask for case sample size}
 
-\item{save}{Default is FALSE. If TRUE, will save the dataframe as a local file with the name of the id.}
+\item{save}{Default FALSE, if TRUE will save as local file, filename will be the name of id}
 }
 \value{
-Returns the cleaned data.
+Returns cleaned data
 }
 \description{
-Clean exposure data. Exposure does not require many SNPs. https://gitee.com/OneClickAnalyses/Oneclick/blob/master/R/U1_Clean_data.R
+clean exp. exp does not require that many of snp
 }
 \examples{
-df <- U1_Clean_data_exp(df)
+df <- U1_Clean_data_exp(df,continuous=FALSE,save=FALSE)
+
 
 }
