@@ -145,6 +145,7 @@ if (length(missing_cols) > 0) {
 }
 # reorder
 setcolorder(res, c(setdiff(names(res), cols_to_move), cols_to_move))
+
   return(res)
 }
 

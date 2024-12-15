@@ -32,7 +32,7 @@ U6_mrcML <- function(dat, res, random_seed = 314, Alpha = 0.05, num_pert = 200, 
   )
 
   # Convert results into a data frame
-mrcML_res <- data.frame(
+  mrcML_res <- data.frame(
     exposure_cML = mrcML@Exposure,
     outcome_cML = mrcML@Outcome,
     b_cML = mrcML@Estimate,

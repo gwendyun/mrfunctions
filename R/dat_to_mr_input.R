@@ -21,8 +21,8 @@ dat_to_mr_input <- function(dat) {
     bxse = as.numeric(dat[["se.exposure"]]),
     by = as.numeric(dat[["beta.outcome"]]),
     byse = as.numeric(dat[["se.outcome"]]),
-    exposure = unique(dat[["exposure"]])[1],  # 确保单一暴露名称
-    outcome = unique(dat[["outcome"]])[1],    # 确保单一结局名称
+    exposure = unique(dat[["exposure"]])[1], 
+    outcome = unique(dat[["outcome"]])[1],   
     snps = as.character(dat[["SNP"]]),
     effect_allele = as.character(dat[["effect_allele.exposure"]]),
     other_allele = as.character(dat[["other_allele.exposure"]]),
