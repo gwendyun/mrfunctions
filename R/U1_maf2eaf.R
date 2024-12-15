@@ -12,7 +12,7 @@
 #'
 U1_maf2eaf <- function(df) {
   require(dplyr)
-
+  # https://github.com/sinarueeger/GWAS.utils/blob/master/R/eaf2maf.R
   # Check for MAF columns and rename if present
   if (any(c("MinorAlleleFrequency", "minor_allele_frequency", "MAF", "Freq", "freq", "alt_freq", 'freq_minor', 'Freq_Minor_Allele', "maf") %in% colnames(df))) {
     df <- rename_col(df, patterns = c("MinorAlleleFrequency", "minor_allele_frequency", "MAF", "Freq", "freq", "alt_freq", 'freq_minor', 'Freq_Minor_Allele', "maf"), format = "maf")
