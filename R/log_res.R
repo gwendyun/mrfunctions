@@ -136,6 +136,7 @@ cols_to_move <- c("outliers",
                   "logor_uci95_MR_PRESSO", 
                   "PRESSO_Distortion_beta", 
                   "PRESSO_Distortion_Pvalue")
+
 # add NA is not col does not exist
 missing_cols <- setdiff(cols_to_move, names(res))
 if (length(missing_cols) > 0) {

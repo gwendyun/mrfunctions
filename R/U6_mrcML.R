@@ -1,14 +1,13 @@
 #' @title U6_mrcML
-#' @description further analysis for univariable cML from MendelianRandomization package
+#' @description further analysis for univariable cML from MendelianRandomization package add to res
 #'
 #' @param dat
-#'
+#' @param res
+#' 
 #' @return mrcML_res
 #' @export
 #'
-#' @examples mrcML_res <- dat %>%
-#'  dat_to_mr_input() %>%
-#'  U6_mrcML(dat = ., random_seed = 314, Alpha = 0.05, num_pert = 200, maxit = 100)
+#' @examples mrcML_res <- U6_mrcML(dat, res, random_seed = 314, Alpha = 0.05, num_pert = 200, maxit = 100)
 #'
 #'
 U6_mrcML <- function(dat, res, random_seed = 314, Alpha = 0.05, num_pert = 200, maxit = 100) {
@@ -16,7 +15,7 @@ U6_mrcML <- function(dat, res, random_seed = 314, Alpha = 0.05, num_pert = 200, 
   suppressMessages(require('mrfunctions'))
   
   mr_input_obj <- mrfunctions::dat_to_mr_input(dat)
-
+  # Run the mr_cML function
   mrcML <- mr_cML(
     object = mr_input_obj,
     MA = TRUE,
@@ -48,20 +47,24 @@ U6_mrcML <- function(dat, res, random_seed = 314, Alpha = 0.05, num_pert = 200, 
     DP = mrcML@DP
   )
 
- # Calculate OR and log-transformed OR
+  # Calculate OR and log-transformed OR
   mrcML_res$or_cML <- exp(mrcML_res$b_cML)
   mrcML_res$or_lci95_cML <- exp(mrcML_res$lo_ci_cML)
   mrcML_res$or_uci95_cML <- exp(mrcML_res$up_ci_cML)
+
   mrcML_res$`logb_cML` <- 0.693 * mrcML_res$`b_cML`
   mrcML_res$`loglo_ci_cML` <- 0.693 * mrcML_res$`lo_ci_cML`
   mrcML_res$`logup_ci_cML` <- 0.693 * mrcML_res$`up_ci_cML`
+
   mrcML_res$`logor_cML` <- exp(mrcML_res$`logb_cML`)
   mrcML_res$`logor_lci95_cML` <- exp(mrcML_res$`loglo_ci_cML`)
   mrcML_res$`logor_uci95_cML` <- exp(mrcML_res$`logup_ci_cML`)
+
   mrcML_res$`logBeta (95% CI)_cML` <- sprintf("%.3f (%.3f to %.3f)",
                                         mrcML_res$`logb_cML`,
                                         mrcML_res$`loglo_ci_cML`,
                                         mrcML_res$`logup_ci_cML`)
+                                        
   mrcML_res$`logOR (95% CI)_cML` <- sprintf("%.3f (%.3f to %.3f)",
                                       mrcML_res$`logor_cML`,
                                       mrcML_res$`logor_lci95_cML`,
