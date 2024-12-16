@@ -53,7 +53,6 @@ U1_maf2eaf <- function(df) {
     df <- rename_col(df, patterns = c("eaf", "FREQ", "af_alt", "FREQ1", "effect_allele_frequency", "Freq_Tested_Allele", "Alternate.Allele.Frequency"), format = "eaf")
   }
 
-  # If no MAF column found, return message
   if (!"maf" %in% colnames(df)) {
     message('No MAF column found, please check if there is an EAF column available or this will be added by U4_add_eaf function')
     return(NULL)
@@ -61,10 +60,8 @@ U1_maf2eaf <- function(df) {
 
   if(is.data.frame(df)){ df = as.data.frame(df) }
 
-  # Ensure MAF column is numeric
   df$maf <- as.numeric(df$maf)
 
-  # Calculate EAF based on the provided conditions
   if ("eaf" %in% colnames(df)) {
     df$eaf <- ifelse(df$eaf > 0.5, df$eaf, ifelse(df$maf < 0.5, df$maf, 1 - df$maf))
   } else {

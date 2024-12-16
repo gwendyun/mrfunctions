@@ -1,9 +1,9 @@
 #' @title U6_mrcML
 #' @description further analysis for univariable cML from MendelianRandomization package add to res
 #'
-#' @param dat
-#' @param res
-#' 
+#' @param dat dat after harmonisation
+#' @param res res after mr
+#'
 #' @return mrcML_res
 #' @export
 #'
@@ -13,7 +13,7 @@
 U6_mrcML <- function(dat, res, random_seed = 314, Alpha = 0.05, num_pert = 200, maxit = 100) {
   suppressMessages(require('MendelianRandomization'))
   suppressMessages(require('mrfunctions'))
-  
+
   mr_input_obj <- mrfunctions::dat_to_mr_input(dat)
   # Run the mr_cML function
   mrcML <- mr_cML(
@@ -64,15 +64,15 @@ U6_mrcML <- function(dat, res, random_seed = 314, Alpha = 0.05, num_pert = 200, 
                                         mrcML_res$`logb_cML`,
                                         mrcML_res$`loglo_ci_cML`,
                                         mrcML_res$`logup_ci_cML`)
-                                        
+
   mrcML_res$`logOR (95% CI)_cML` <- sprintf("%.3f (%.3f to %.3f)",
                                       mrcML_res$`logor_cML`,
                                       mrcML_res$`logor_lci95_cML`,
                                       mrcML_res$`logor_uci95_cML`)
   # Merge results into the existing res data frame
   res <- merge(
-    res, 
-    mrcML_res, 
+    res,
+    mrcML_res,
     by.x = c("exposure_Inverse variance weighted", "outcome_Inverse variance weighted"), # Columns in 'res'
     by.y = c("exposure_cML", "outcome_cML"), # Columns in 'mrcML_res'
     all.x = TRUE # Retain all rows from 'res'

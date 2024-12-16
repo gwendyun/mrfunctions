@@ -10,10 +10,10 @@ dat_to_mr_input(dat)
 \item{dat}{}
 }
 \value{
-mrinput
+mr_input_obj
 }
 \description{
-mrinput from MendelianRandomization package
+TwoSampleMR package transfer to mrinput from MendelianRandomization package
 }
 \examples{
 mr_input_obj <- dat_to_mr_input(dat)
