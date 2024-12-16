@@ -59,8 +59,7 @@ U1_maf2eaf <- function(df) {
     return(NULL)
   }
 
-  df$maf <- as.numeric(df$maf)
-  df$eaf <- as.numeric(df$eaf)
+  if(is.data.frame(df)){ df = as.data.frame(df) }
 
   if ("eaf" %in% colnames(df) && df$eaf > 0.5) {
     df$eaf <- df$eaf
