@@ -59,11 +59,16 @@ U1_maf2eaf <- function(df) {
     return(NULL)
   }
 
-  # Ensure MAF column is numeric
   df$maf <- as.numeric(df$maf)
+  df$eaf <- as.numeric(df$eaf)
 
-  # Calculate EAF from MAF
-  df$eaf <- 1 - df$maf
+  if ("eaf" %in% colnames(df) && df$eaf > 0.5) {
+    df$eaf <- df$eaf
+  } else if (df$maf < 0.5) {
+    df$eaf <- df$maf
+  } else {
+    df$eaf <- 1 - df$maf
+  }
 
   # Return the dataframe with the new EAF column, preserving the original MAF column
   return(df)
