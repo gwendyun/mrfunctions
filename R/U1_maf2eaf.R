@@ -45,44 +45,52 @@ U1_maf2eaf <- function(dat) {
     if ('maf' %in% colnames(dat)) {
       message('1000G use EU pop as default')
       
-      # Function to fetch EAF from Ensembl for each SNP
       find_eaf <- function(SNP, pop = "EUR") {
-        server <- "http://rest.ensembl.org/variation/Homo_sapiens/%s?content-type=application/json;pops=1"
-        server <- sprintf(server, SNP)
-        res <- httr::GET(server)
-        httr::stop_for_status(res)
-        res_pop <- jsonlite::fromJSON(jsonlite::toJSON(httr::content(res)))$populations
-        eaf <- subset(res_pop, population == paste0("1000GENOMES:phase_3:", pop))
-        if (nrow(eaf) == 0) {
-          eaf.final <- NA
-        } else {
-          eaf.final <- eaf$frequency[1][[1]]
-        }
-        return(eaf.final)
+        tryCatch({
+          server <- "http://rest.ensembl.org/variation/Homo_sapiens/%s?content-type=application/json;pops=1"
+          server <- sprintf(server, SNP)
+          res <- httr::GET(server)
+          httr::stop_for_status(res)  # Check if the status is okay
+          res_pop <- jsonlite::fromJSON(jsonlite::toJSON(httr::content(res)))$populations
+          
+          eaf <- subset(res_pop, population == paste0("1000GENOMES:phase_3:", pop))
+          if (nrow(eaf) == 0) {
+            return(NA)  # Return NA if no data is found for this SNP
+          } else {
+            return(eaf$frequency[1][[1]])  # Return the first frequency value found
+          }
+        }, error = function(e) {
+          message("Error querying SNP: ", SNP, " - ", e$message)
+          return(NA)  # Return NA in case of error
+        })
       }
       
-      # Function to fill eaf_ref column using find_eaf for each SNP
       fill_eaf_ref <- function(dat, pop = "EUR") {
-        # Find the rows where eaf_ref is NA
-        index <- which(is.na(dat$eaf_ref))
+        # Ensure 'eaf_ref' column exists, and initialize it if needed
+        if (!"eaf_ref" %in% colnames(dat)) {
+          dat$eaf_ref <- NA  # Initialize the column if it doesn't exist
+        }
         
+        index <- which(is.na(dat$eaf_ref))
         if (length(index) > 0) {
           message(paste0("There are ", length(index), " SNPs without EAF in eaf_ref."))
         }
         
-        # Get the unique SNPs that need to be filled
         index_SNP <- unique(dat$SNP[index])
-        
-        # Create a progress bar for the query process
         pb <- progress::progress_bar$new(total = length(index_SNP))
         
         # Iterate through the SNPs and fill in the eaf_ref column
         for (i in 1:length(index_SNP)) {
-          dat$eaf_ref[which(dat$SNP == index_SNP[i])] <- find_eaf(index_SNP[i], pop)
+          eaf_value <- find_eaf(index_SNP[i], pop)  # Get EAF for the SNP
+          if (!is.na(eaf_value)) {
+            dat$eaf_ref[which(dat$SNP == index_SNP[i])] <- eaf_value
+          } else {
+            message(paste("No EAF found for SNP:", index_SNP[i]))
+          }
           pb$tick()
         }
         
-        # If still NA after attempting to fill, fill with 0.5
+        # If still NA, fill with 0.5
         index <- which(is.na(dat$eaf_ref))
         if (length(index) > 0) {
           message(paste0("There are still ", length(index), " SNPs without EAF in eaf_ref. Filling with 0.5."))
