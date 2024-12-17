@@ -10,6 +10,10 @@
 #' df <- U1_maf2eaf(df)
 #'
 #'
+
+
+This is wrong. need to compare this with 1000G
+
 U1_maf2eaf <- function(df) {
   require(dplyr)
 
@@ -62,11 +66,6 @@ U1_maf2eaf <- function(df) {
 
   df$maf <- as.numeric(df$maf)
 
-  if ("eaf" %in% colnames(df)) {
-    df$eaf <- ifelse(df$eaf > 0.5, df$eaf, ifelse(df$maf < 0.5, df$maf, 1 - df$maf))
-  } else {
-    df$eaf <- ifelse(df$maf < 0.5, df$maf, 1 - df$maf)
-  }
 
   # Return the dataframe with the new EAF column, preserving the original MAF column
   return(df)
