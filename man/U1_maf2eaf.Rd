@@ -4,10 +4,10 @@
 \alias{U1_maf2eaf}
 \title{U1_maf2eaf}
 \usage{
-U1_maf2eaf(df)
+U1_maf2eaf(dat)
 }
 \arguments{
-\item{df}{A dataframe containing MAF or EAF columns.}
+\item{dat}{A dataframe containing MAF or EAF columns.}
 }
 \value{
 A dataframe with EAF column, preserving the original MAF column.
@@ -16,7 +16,7 @@ A dataframe with EAF column, preserving the original MAF column.
 Convert MAF to EAF in a dataframe, checking for and renaming relevant columns.
 }
 \examples{
-df <- U1_maf2eaf(df)
+dat <- U1_maf2eaf(dat)
 
 
 }
