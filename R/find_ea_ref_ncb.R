@@ -18,6 +18,9 @@ find_ea_ref_ncb <- function(df, pop="European") {
     df$sample_size <- NA
     df$ref_allele <- NA
     df$alt_allele <- NA
+    df$eaf <- NA
+    df$alt_base <- NA
+    df$alt_freq <- NA
 
     for (i in 1:nrow(df)) {
       # Construct the URL for the SNP
@@ -35,17 +38,36 @@ find_ea_ref_ncb <- function(df, pop="European") {
       # Extract data for the European population
       ea_row <- subset(allele_data, Study == '1000Genomes' & Population == "Europe")
 
-
       if (nrow(ea_row) > 0) {
         # Extract relevant values
-        sample_size <- ea_row$`Sample Size`
         ref_allele <- ea_row$`Ref Allele`
         alt_allele <- ea_row$`Alt Allele`
-
+        ea_row <- ea_row %>% 
+          mutate(
+            alt_base = sub("=.*", "", `Alt Allele`), 
+            alt_freq = as.numeric(sub(".*=", "", `Alt Allele`))
+          )
         # Fill the df dataframe with the extracted values
-        df$sample_size[i] <- sample_size
         df$ref_allele[i] <- ref_allele
         df$alt_allele[i] <- alt_allele
+        df$alt_base[i] <- ea_row$alt_base
+        df$alt_freq[i] <- ea_row$alt_freq
+
+        # Check if effect_allele matches alt_allele
+        if (df$effect_allele[i] == df$alt_base[i]) {
+          if (df$alt_freq[i] < 0.5 && df$maf[i] < 0.5) {
+            df$eaf[i] <- df$maf[i]
+          } else if (df$alt_freq[i] > 0.5) {
+            df$eaf[i] <- 1 - df$maf[i]
+          }
+        } else {
+          df$maf[i] <- 1 - df$maf[i]
+          if (df$alt_freq[i] < 0.5 && df$maf[i] < 0.5) {
+            df$eaf[i] <- df$maf[i]
+          } else if (df$alt_freq[i] > 0.5) {
+            df$eaf[i] <- 1 - df$maf[i]
+          }
+        }
       } else {
         message("No data found for SNP: ", df$SNP[i])
       }
