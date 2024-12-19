@@ -1,7 +1,8 @@
 #' @title find_ea_ref_ncb
 #' @description Compare your maf with 1000G as reference panel.
 #'
-#' @param dat A dataframe containing MAF columns.
+#' @param df A dataframe containing MAF columns.
+#' @param pop The population to use for EAF reference, default is "European".
 #'
 #' @return A dataframe with ea_ref column from 1000G.
 #' @export
@@ -10,7 +11,7 @@
 #' dat <- find_ea_ref_ncb(dat)
 #'
 #'
-find_ea_ref_ncb <- function(df, pop="European") {
+find_ea_ref_ncb <- function(df, pop = "European") {
   suppressMessages(require('rvest'))
   suppressMessages(require('dplyr'))
 
@@ -59,6 +60,8 @@ find_ea_ref_ncb <- function(df, pop="European") {
             df$eaf[i] <- df$maf[i]
           } else if (df$alt_freq[i] > 0.5) {
             df$eaf[i] <- 1 - df$maf[i]
+          } else if (df$alt_freq[i] < 0.5) {
+            df$eaf[i] <- df$maf[i]
           }
         } else {
           df$maf[i] <- 1 - df$maf[i]
@@ -66,6 +69,8 @@ find_ea_ref_ncb <- function(df, pop="European") {
             df$eaf[i] <- df$maf[i]
           } else if (df$alt_freq[i] > 0.5) {
             df$eaf[i] <- 1 - df$maf[i]
+          } else if (df$alt_freq[i] < 0.5) {
+            df$eaf[i] <- df$maf[i]
           }
         }
       } else {
