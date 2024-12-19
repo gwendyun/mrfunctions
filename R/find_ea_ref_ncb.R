@@ -73,8 +73,8 @@ find_ea_ref_ncb <- function(df, pop = "European") {
             df$eaf[i] <- df$maf[i]
           }
         } else {
-          df$maf[i] <- 1 - df$maf[i]
-          if (df$alt_freq[i] < 0.5 && df$maf[i] < 0.5) {
+          df$eaf[i] <- 1 - df$alt_freq[i]
+          if (df$eaf[i] < 0.5 && df$maf[i] < 0.5) {
             df$eaf[i] <- df$maf[i]
           } else if (df$alt_freq[i] > 0.5) {
             df$eaf[i] <- 1 - df$maf[i]
