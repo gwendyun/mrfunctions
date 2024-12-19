@@ -31,10 +31,19 @@ find_ea_ref_ncb <- function(df, pop = "European") {
       page <- read_html(url)
 
       # Extract allele frequency data from the page
-      allele_data <- page %>%
-        html_nodes("table") %>%
-        html_table(fill = TRUE) %>%
-        .[[2]]  # Get the second table
+      allele_data <- tryCatch({
+        page %>%
+          html_nodes("table") %>%
+          html_table(fill = TRUE) %>%
+          .[[2]]  # Get the second table
+      }, error = function(e) {
+        message("Error: ", e)
+        df$ref_allele[i] <- NA
+        df$alt_allele[i] <- NA
+        return(NULL)
+      })
+
+      if (is.null(allele_data)) next
 
       # Extract data for the European population
       ea_row <- subset(allele_data, Study == '1000Genomes' & Population == "Europe")
@@ -75,6 +84,8 @@ find_ea_ref_ncb <- function(df, pop = "European") {
         }
       } else {
         message("No data found for SNP: ", df$SNP[i])
+        df$ref_allele[i] <- NA
+        df$alt_allele[i] <- NA
       }
     }
     return(df)
